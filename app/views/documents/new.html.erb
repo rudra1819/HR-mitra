@@ -1,0 +1,44 @@
+<div class="container mt-5">
+  <div class="col-lg-8 offset-lg-2">
+    <div class="card rounded-0 shadow-sm mb-4">
+      <div class="card-body">
+        <h2 class="text-center text-secondary mb-4">
+          <%= @document.new_record? ? "Create New Document" : "Edit Document" %>
+        </h2>
+
+        <%= form_with(model: @document, local: true) do |f| %>
+          <% if @document.errors.any? %>
+            <div class="alert alert-danger">
+              <h4>Please fix the following errors:</h4>
+              <ul>
+                <% @document.errors.full_messages.each do |message| %>
+                  <li><%= message %></li>
+                <% end %>
+              </ul>
+            </div>
+          <% end %>
+
+          <div class="mb-3">
+            <%= f.label :name, "Document Name" %>
+            <%= f.text_field :name, class: "form-control", placeholder: "Enter document name" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :doc_type, "Document Type" %>
+            <%= f.text_field :doc_type, class: "form-control", placeholder: "Enter document type" %>
+          </div>
+
+          <div class="mb-3">
+            <%= f.label :employee_id, "Employee ID" %>
+            <%= f.number_field :employee_id, class: "form-control", placeholder: "Enter Employee ID" %>
+          </div>
+
+          <div class="text-center mt-4">
+            <%= f.submit @document.new_record? ? "Create Document" : "Update Document", class: "btn btn-success border-0 rounded-pill shadow p-2 px-4" %>
+            <%= link_to "Cancel", documents_path, class: "btn btn-secondary border-0 rounded-pill shadow p-2 px-4 ms-2" %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,6 @@
+<h1>Are you sure you want to delete this employee?</h1>
+
+<p><strong>Name:</strong> <%= @employee.first_name %> <%= @employee.last_name %></p>
+
+<%= link_to 'Delete', employee_path(@employee), turbo_method: :delete, data: { turbo_confirm: "Are you sure?" }, class: "btn btn-danger" %>
+<%= link_to 'No, go back', employees_path, class: 'btn btn-secondary' %>

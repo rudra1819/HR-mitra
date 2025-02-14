@@ -1,0 +1,61 @@
+<div class="container mt-5">
+  <div class="card shadow-lg p-4 rounded">
+    <h1 class="text-center text-primary mb-4">Employee Details</h1>
+
+    <div class="row">
+      <!-- Left Column -->
+      <div class="col-md-6 border-end">
+        <p class="fs-5"><strong>First Name:</strong> <%= @employee.first_name %></p>
+        <p class="fs-5"><strong>Middle Name:</strong> <%= @employee.middle_name %></p>
+        <p class="fs-5"><strong>Last Name:</strong> <%= @employee.last_name %></p>
+        <p class="fs-5"><strong>Personal Email:</strong> <%= @employee.personal_email %></p>
+      </div>
+
+      <!-- Right Column -->
+      <div class="col-md-6">
+        <p class="fs-5"><strong>City:</strong> <%= @employee.city %></p>
+        <p class="fs-5"><strong>State:</strong> <%= @employee.state %></p>
+        <p class="fs-5"><strong>Country:</strong> <%= @employee.country %></p>
+        <p class="fs-5"><strong>Address:</strong> <%= @employee.address_line_1 %>, <%= @employee.address_line_2 %></p>
+      </div>
+    </div>
+
+    <!-- Documents Section -->
+    <h2 class="text-center text-secondary mt-5">Documents</h2>
+    <div class="table-responsive mt-3">
+      <table class="table table-bordered table-striped table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Document ID</th>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Created At</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @employee.documents.each do |document| %>
+            <tr>
+              <td><%= document.id %></td>
+              <td><%= document.name %></td>
+              <td><%= document.doc_type %></td>
+              <td><%= document.created_at.strftime('%d %b %Y') %></td>
+              <td>
+                <%= link_to 'View', document_path(document), class: 'btn btn-info btn-sm' %>
+                <%= link_to 'Edit', edit_document_path(document), class: 'btn btn-warning btn-sm' %>
+                <%= button_to 'Delete', document_path(document), method: :delete, data: { confirm: 'Are you sure?' }, class: 'btn btn-danger btn-sm' %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <%= link_to "Edit Employee", edit_employee_path(@employee), class: 'btn btn-primary' %>
+      <%= button_to 'Delete', employee_path(@employee), method: :delete, data: { confirm: "Are you sure you want to delete this employee?" }, class: "btn btn-danger" %>
+      <%= link_to 'Back', employees_path, class: 'btn btn-secondary' %>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,25 @@
+<div class="container mt-5">
+  <div class="card shadow-lg p-4 rounded">
+    <h1 class="text-center text-primary mb-4">Document Details</h1>
+
+    <div class="row">
+      <div class="col-md-6 border-end">
+        <p class="fs-5"><strong>Document Name:</strong> <%= @document.name %></p>
+        <p class="fs-5"><strong>Document Type:</strong> <%= @document.doc_type %></p>
+        <p class="fs-5"><strong>Created At:</strong> <%= @document.created_at.strftime("%B %d, %Y") %></p>
+      </div>
+
+      <div class="col-md-6">
+        <p class="fs-5"><strong>Employee Name:</strong> <%= @document.employee.first_name %></p>
+        <p class="fs-5"><strong>Employee ID:</strong> <%= @document.employee.id %></p>
+        <p class="fs-5"><strong>Employee Email:</strong> <%= @document.employee.personal_email %></p>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-center gap-3 mt-4">
+      <%= link_to "Edit Document", edit_document_path(@document), class: 'btn btn-primary rounded-pill' %>
+      <%= button_to 'Delete', document_path(@document), method: :delete, data: { confirm: "Are you sure you want to delete this document?" }, class: "btn btn-danger rounded-pill" %>
+      <%= link_to 'Back to Documents', documents_path, class: 'btn btn-secondary rounded-pill' %>
+    </div>
+  </div>
+</div>
