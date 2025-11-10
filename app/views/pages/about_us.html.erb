@@ -1,3 +1,35 @@
-<h1>Pages#about_us</h1>
-<p>Find me in app/views/pages/about_us.html.erb</p>
-<%= render "shared/links"%>
+<div class="container mt-5">
+  <!-- Header -->
+  <div class="card rounded-3 shadow-sm mb-4 border-0">
+    <div class="card-body text-center">
+      <h1 class="fw-bold text-secondary mb-2">About Us</h1>
+      <p class="text-muted mb-0">Learn more about our company, mission, and team.</p>
+    </div>
+  </div>
+
+  <!-- Shared Links -->
+  <%= render "shared/links" %>
+
+  <!-- About Content -->
+  <div class="card shadow-sm rounded-3 p-4 mb-4">
+    <h3 class="fw-semibold mb-3">Our Mission</h3>
+    <p>
+      Our mission is to empower businesses with efficient and reliable employee management solutions.
+      We strive to make HR processes smoother, faster, and more transparent for all.
+    </p>
+
+    <h3 class="fw-semibold mt-4 mb-3">Our Vision</h3>
+    <p>
+      We envision a workplace where every employee can thrive, and organizations can operate at their
+      fullest potential through smart technology and human-centric solutions.
+    </p>
+
+    <h3 class="fw-semibold mt-4 mb-3">Our Team</h3>
+    <p>
+      Our team consists of passionate developers, designers, and HR experts who work together to
+      provide seamless solutions. Each team member brings unique expertise to make our platform
+      the best in class.
+    </p>
+  </div>
+
+</div>
