@@ -1,15 +1,14 @@
 Rails.application.routes.draw do
-  devise_for :users
-  
-resources :employees
-resources :documents
+ devise_for :users, controllers: { passwords: 'users/passwords' }
+ root to: 'employees#index'
 
-root "employees#index"
-  get 'about'=>"pages#about_us"
-  get "contact_us"=>"pages#contact_us"
-  get "privacy_policy"=>"pages#privacy_policy"
-  get "terms"=>"pages#terms_and_conditon"
-  get "pages/and"
-  get "pages/conditions"
-  get "home"=>"home/create"
+ scope :'admin' do
+  resources :documents ,shallow: true
+  resources :employees , shallow: true
+  get 'about_us', to: 'pages#about_us'
+  get 'contact_us', to: 'pages#contact_us'
+  get 'privacy_policy', to: 'pages#privacy_policy'
+  get 'terms_and_conditions', to: 'pages#terms_and_conditions'
+ end
+
 end
