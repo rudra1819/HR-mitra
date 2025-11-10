@@ -1,0 +1,33 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrmitra-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrmitra-web
+  template:
+    metadata:
+      labels:
+        app: hrmitra-web
+    spec:
+      containers:
+        - name: rails
+          image: bharatgoswami04784/hr_mitra_web:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: RAILS_ENV
+              value: "production"
+            - name: RAILS_MASTER_KEY
+              value: "2a4b8c0e7430174f78cd957189cef2ab"
+            - name: DATABASE_HOST
+              value: "hrmitra-db"
+            - name: DATABASE_USER
+              value: "developer"
+            - name: DATABASE_PASSWORD
+              value: "developer"
+            - name: DATABASE_NAME
+              value: "hr_mitra_production"
+          command: ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]

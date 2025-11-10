@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrmitra-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrmitra-db
+  template:
+    metadata:
+      labels:
+        app: hrmitra-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: developer
+            - name: POSTGRES_PASSWORD
+              value: developer
+            - name: POSTGRES_DB
+              value: hr_mitra_production
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-storage
+          emptyDir: {}   # 🔸 Change to PersistentVolumeClaim in production
