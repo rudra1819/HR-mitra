@@ -10,7 +10,6 @@ class DocumentsController < ApplicationController
   end
 
   def create
-    
     @document = Document.new(document_params)
     if @document.save
       redirect_to documents_path, notice: 'Document was successfully created.'
@@ -28,7 +27,7 @@ class DocumentsController < ApplicationController
 
   def update
     if @document.update(document_params)
-      redirect_to documents_path, notice: 'Document was successfully updated.'
+      redirect_to employee_path, notice: 'Document was successfully updated.'
     else
       flash.now[:alert] = 'Error updating document. Please check the form.'
       render :edit
@@ -37,7 +36,7 @@ class DocumentsController < ApplicationController
 
   def destroy
     @document.destroy
-    redirect_to documents_path, notice: 'Document was successfully deleted.'
+    redirect_to employee_path, notice: 'Document was successfully deleted.'
   end
 
   private
