@@ -3,7 +3,6 @@
     <h1 class="text-center text-primary mb-4">Employee Details</h1>
 
     <div class="row">
-      <!-- Left Column -->
       <div class="col-md-6 border-end">
         <p class="fs-5"><strong>First Name:</strong> <%= @employee.first_name %></p>
         <p class="fs-5"><strong>Middle Name:</strong> <%= @employee.middle_name %></p>
@@ -11,7 +10,6 @@
         <p class="fs-5"><strong>Personal Email:</strong> <%= @employee.personal_email %></p>
       </div>
 
-      <!-- Right Column -->
       <div class="col-md-6">
         <p class="fs-5"><strong>City:</strong> <%= @employee.city %></p>
         <p class="fs-5"><strong>State:</strong> <%= @employee.state %></p>
@@ -19,8 +17,11 @@
         <p class="fs-5"><strong>Address:</strong> <%= @employee.address_line_1 %>, <%= @employee.address_line_2 %></p>
       </div>
     </div>
+    <div class="d-flex justify-content-between align-items-center mt-5">
+      <h2 class="text-secondary mb-0">Documents</h2>
+      <%= link_to 'New Document', documents_path(@employee), class: 'btn btn-success' %>
+    </div>
 
-    <!-- Documents Section -->
     <h2 class="text-center text-secondary mt-5">Documents</h2>
     <div class="table-responsive mt-3">
       <table class="table table-bordered table-striped table-hover">
@@ -51,7 +52,6 @@
       </table>
     </div>
 
-    <!-- Action Buttons -->
     <div class="d-flex justify-content-center gap-3 mt-4">
       <%= link_to "Edit Employee", edit_employee_path(@employee), class: 'btn btn-primary' %>
       <%= button_to 'Delete', employee_path(@employee), method: :delete, data: { confirm: "Are you sure you want to delete this employee?" }, class: "btn btn-danger" %>

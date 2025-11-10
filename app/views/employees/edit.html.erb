@@ -16,7 +16,6 @@
 
     <%= form_for(@employee) do |f| %>
       <div class="row">
-        <!-- Left Column -->
         <div class="col-md-6">
           <div class="form-group mb-3">
             <%= f.label :first_name, class: "form-label" %>
@@ -43,8 +42,6 @@
             <%= f.text_field :city, class: 'form-control' %>
           </div>
         </div>
-
-        <!-- Right Column -->
         <div class="col-md-6">
           <div class="form-group mb-3">
             <%= f.label :state, class: "form-label" %>
@@ -68,7 +65,6 @@
         </div>
       </div>
 
-      <!-- Action Buttons -->
       <div class="d-flex justify-content-center gap-3 mt-4">
         <%= f.submit 'Update Employee', class: 'btn btn-primary' %>
         <%= link_to 'Back', employee_path(@employee), class: 'btn btn-secondary' %>
