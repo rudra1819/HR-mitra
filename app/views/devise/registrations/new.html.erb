@@ -1,5 +1,7 @@
-<!-- Inline CSS to center the layout on the page -->
+<!-- app/views/devise/registrations/new.html.erb -->
+
 <style>
+  /* --- Page Layout --- */
   body {
     margin: 0;
     padding: 0;
@@ -7,41 +9,57 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f2f2f2;
-    font-family: Arial, sans-serif;
+    background: #f2f2f2; /* same as login page */
+    font-family: 'Arial', sans-serif;
   }
 
+  /* --- Card Container --- */
   .form-container {
-    background: white;
-    padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    background: #fff;
+    padding: 2.5rem 2rem;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     width: 100%;
     max-width: 400px;
-  }
-
-  h2 {
     text-align: center;
-    margin-bottom: 1.5rem;
+    position: relative;
   }
 
+  /* --- Header --- */
+  h2 {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  /* --- Form Elements --- */
   .form-group {
     margin-bottom: 1rem;
+    text-align: left;
   }
 
   .form-label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
+    color: #000;
   }
 
   .form-control {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-weight: bold;
   }
 
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  /* --- Buttons --- */
   .btn {
     width: 100%;
     padding: 0.75rem;
@@ -49,7 +67,7 @@
     border: none;
     color: white;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
   }
 
@@ -57,13 +75,8 @@
     background-color: #0056b3;
   }
 
-  .text-muted {
-    font-size: 0.85rem;
-    color: #666;
-  }
-
   .form-actions {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 
   .text-center {
@@ -73,14 +86,62 @@
   .mt-3 {
     margin-top: 1rem;
   }
+
+  /* --- Optional: Warning popup for errors --- */
+  .warning-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 9999;
+    animation: slideUp 0.5s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .warning-popup button {
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    float: right;
+    cursor: pointer;
+    color: #856404;
+  }
 </style>
 
 <div class="form-container">
-  <h2>Sign Up</h2>
+  <h2>Create Account</h2>
+
+  <!-- Optional: show errors in bottom-right -->
+  <% if resource.errors.any? %>
+    <div class="warning-popup" id="warningPopup">
+      <button onclick="document.getElementById('warningPopup').style.display='none'">&times;</button>
+      <ul class="mb-0">
+        <% resource.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+
+    <script>
+      setTimeout(() => {
+        const popup = document.getElementById('warningPopup');
+        if(popup) popup.style.display = 'none';
+      }, 4000);
+    </script>
+  <% end %>
 
   <%= form_for(resource, as: resource_name, url: registration_path(resource_name)) do |f| %>
-    <%= render "devise/shared/error_messages", resource: resource %>
-
     <div class="form-group">
       <%= f.label :email, class: "form-label" %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
@@ -88,10 +149,10 @@
 
     <div class="form-group">
       <%= f.label :password, class: "form-label" %>
+      <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
       <% if @minimum_password_length %>
         <small class="text-muted">(<%= @minimum_password_length %> characters minimum)</small>
       <% end %>
-      <%= f.password_field :password, autocomplete: "new-password", class: "form-control" %>
     </div>
 
     <div class="form-group">
@@ -100,11 +161,12 @@
     </div>
 
     <div class="form-actions">
-      <%= f.submit "Sign up", class: "btn" %>
+      <%= f.submit "Sign Up", class: "btn" %>
     </div>
   <% end %>
 
   <div class="text-center mt-3">
+    <p>Already have an account?</p>
     <%= render "devise/shared/links" %>
   </div>
 </div>
