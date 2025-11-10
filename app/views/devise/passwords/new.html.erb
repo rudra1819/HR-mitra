@@ -1,5 +1,7 @@
-<!-- Inline CSS for centered and styled password reset form -->
+<!-- app/views/devise/passwords/new.html.erb -->
+
 <style>
+  /* --- Page Layout --- */
   body {
     margin: 0;
     padding: 0;
@@ -7,41 +9,57 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    background: #f2f2f2;
+    background: #f2f2f2; /* consistent with login/register pages */
     font-family: Arial, sans-serif;
   }
 
+  /* --- Card Container --- */
   .form-container {
-    background: white;
+    background: #fff;
     padding: 2rem;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
     width: 100%;
     max-width: 400px;
-  }
-
-  h2 {
     text-align: center;
-    margin-bottom: 1.5rem;
+    position: relative;
   }
 
+  /* --- Header --- */
+  h2 {
+    margin-bottom: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  /* --- Form Elements --- */
   .form-group {
     margin-bottom: 1rem;
+    text-align: left;
   }
 
   .form-label {
     display: block;
     margin-bottom: 0.5rem;
     font-weight: bold;
+    color: #000;
   }
 
   .form-control {
     width: 100%;
     padding: 0.5rem;
     border: 1px solid #ccc;
-    border-radius: 5px;
+    border-radius: 6px;
+    font-weight: bold;
   }
 
+  .form-control:focus {
+    border-color: #007bff;
+    outline: none;
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  }
+
+  /* --- Buttons --- */
   .btn {
     width: 100%;
     padding: 0.75rem;
@@ -49,7 +67,7 @@
     border: none;
     color: white;
     font-weight: bold;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
   }
 
@@ -58,7 +76,7 @@
   }
 
   .form-actions {
-    margin-top: 1rem;
+    margin-top: 1.5rem;
   }
 
   .text-center {
@@ -68,14 +86,62 @@
   .mt-3 {
     margin-top: 1rem;
   }
+
+  /* --- Optional: Bottom-right error popup --- */
+  .warning-popup {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #fff3cd;
+    color: #856404;
+    border: 1px solid #ffeeba;
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-weight: bold;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    z-index: 9999;
+    animation: slideUp 0.5s ease;
+  }
+
+  @keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .warning-popup button {
+    background: transparent;
+    border: none;
+    font-weight: bold;
+    font-size: 1rem;
+    float: right;
+    cursor: pointer;
+    color: #856404;
+  }
 </style>
 
 <div class="form-container">
   <h2>Forgot your password?</h2>
 
-  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-    <%= render "devise/shared/error_messages", resource: resource %>
+  <!-- Optional bottom-right error popup -->
+  <% if resource.errors.any? %>
+    <div class="warning-popup" id="warningPopup">
+      <button onclick="document.getElementById('warningPopup').style.display='none'">&times;</button>
+      <ul class="mb-0">
+        <% resource.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
 
+    <script>
+      setTimeout(() => {
+        const popup = document.getElementById('warningPopup');
+        if(popup) popup.style.display = 'none';
+      }, 4000);
+    </script>
+  <% end %>
+
+  <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
     <div class="form-group">
       <%= f.label :email, class: "form-label" %>
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "form-control" %>
