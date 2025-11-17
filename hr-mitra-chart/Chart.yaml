@@ -1,0 +1,5 @@
+apiVersion: v2
+name: hrmitra
+description: Helm chart for HR Mitra (Rails + Postgres)
+version: 0.1.0
+appVersion: "1.0"

@@ -1,0 +1,130 @@
+# -------------------------------
+# Postgres Deployment
+# -------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrmitra-db
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrmitra-db
+  template:
+    metadata:
+      labels:
+        app: hrmitra-db
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:15  
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              value: developer
+            - name: POSTGRES_PASSWORD
+              value: developer
+            - name: POSTGRES_DB
+              value: hr_mitra_production
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+      volumes:
+        - name: postgres-storage
+          emptyDir: {}   # 🔸 Change to PersistentVolumeClaim in production
+
+---
+# -------------------------------
+# Postgres Service
+# -------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: hrmitra-db
+spec:
+  type: ClusterIP
+  ports:
+    - port: 5432
+      targetPort: 5432
+  selector:
+    app: hrmitra-db
+
+---
+# -------------------------------
+# Web Deployment
+# -------------------------------
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: hrmitra-web
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: hrmitra-web
+  template:
+    metadata:
+      labels:
+        app: hrmitra-web
+    spec:
+      containers:
+        - name: rails
+          image: bharatgoswami04784/hr_mitra_web:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: RAILS_ENV
+              value: "production"
+            - name: RAILS_MASTER_KEY
+              value: "2a4b8c0e7430174f78cd957189cef2ab"
+            - name: DATABASE_HOST
+              value: "hrmitra-db"
+            - name: DATABASE_USER
+              value: "developer"
+            - name: DATABASE_PASSWORD
+              value: "developer"
+            - name: DATABASE_NAME
+              value: "hr_mitra_production"
+          command: ["./bin/rails", "server", "-b", "0.0.0.0", "-p", "3000"]
+
+---
+# -------------------------------
+# Web Service
+# -------------------------------
+apiVersion: v1
+kind: Service
+metadata:
+  name: hrmitra-web
+spec:
+  type: ClusterIP   # 🔸 NodePort hata diya, ab Ingress handle karega traffic
+  selector:
+    app: hrmitra-web
+  ports:
+    - protocol: TCP
+      port: 3000
+      targetPort: 3000
+
+---
+# -------------------------------
+# Ingress for hrmitra-web
+# -------------------------------
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hrmitra-ingress
+  annotations:
+    nginx.ingress.kubernetes.io/rewrite-target: /
+spec:
+  ingressClassName: nginx   # Make sure nginx ingress controller is installed
+  rules:
+    - host: hrmitra.local     # 🔸 Use this domain locally or replace with your real domain
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: hrmitra-web
+                port:
+                  number: 3000

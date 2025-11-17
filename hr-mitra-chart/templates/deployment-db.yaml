@@ -1,32 +1,33 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: hrmitra-db
+  name: {{ include "hrmitra.fullname" . }}-db
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: hrmitra-db
+      app: {{ include "hrmitra.fullname" . }}-db
   template:
     metadata:
       labels:
-        app: hrmitra-db
+        app: {{ include "hrmitra.fullname" . }}-db
     spec:
       containers:
         - name: postgres
-          image: postgres:15
+          image: {{ .Values.postgres.image }}
           ports:
             - containerPort: 5432
           env:
             - name: POSTGRES_USER
-              value: developer
+              value: {{ .Values.postgres.user }}
             - name: POSTGRES_PASSWORD
-              value: developer
+              value: {{ .Values.postgres.password }}
             - name: POSTGRES_DB
-              value: hr_mitra_production
+              value: {{ .Values.postgres.db }}
           volumeMounts:
             - name: postgres-storage
               mountPath: /var/lib/postgresql/data
       volumes:
         - name: postgres-storage
-          emptyDir: {}   # 🔸 Change to PersistentVolumeClaim in production
+          persistentVolumeClaim:
+            claimName: {{ include "hrmitra.fullname" . }}-db-pvc

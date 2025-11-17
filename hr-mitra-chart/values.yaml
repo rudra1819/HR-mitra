@@ -1,0 +1,41 @@
+# -----------------------------
+# Rails App Config
+# -----------------------------
+rails:
+  image:
+    repository: bharatgoswami04784/hr_mitra_web
+    tag: latest
+    pullPolicy: IfNotPresent
+  replicas: 1
+  env:
+    RAILS_ENV: "production"
+    RAILS_MASTER_KEY: "2a4b8c0e7430174f78cd957189cef2ab"
+  resources:
+    requests:
+      cpu: 250m
+      memory: 512Mi
+    limits:
+      cpu: 500m
+      memory: 1Gi
+
+# -----------------------------
+# Database Config
+# -----------------------------
+postgres:
+  image: postgres:15
+  user: developer
+  password: developer
+  db: hr_mitra_production
+  storage: 1Gi
+
+# -----------------------------
+# Service & Ingress
+# -----------------------------
+service:
+  type: ClusterIP
+  port: 3000
+
+ingress:
+  enabled: true
+  className: nginx
+  host: hrmitra.local
