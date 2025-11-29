@@ -1,0 +1,33 @@
+# render.yaml - Docker-based Rails app + managed Postgres (Render)
+services:
+  - type: web
+    name: HR-mitra-web
+    env: docker
+    repo: https://github.com/rudra1819/HR-mitra
+    branch: main
+    dockerfilePath: ./Dockerfile
+    plan: starter
+    autoDeploy: true
+    buildCommand: docker build -t hr-mitra:latest .
+    # run migrations during deploy; keeps startup clean
+    deployCommand: bash -lc "bundle exec rails db:migrate || true"
+    startCommand: bash -lc "bundle exec puma -C config/puma.rb"
+    envVars:
+      - key: RAILS_ENV
+        value: production
+      - key: RAILS_SERVE_STATIC_FILES
+        value: "true"
+      - key: RAILS_LOG_TO_STDOUT
+        value: "true"
+      # Note: set SECRET_KEY_BASE and RAILS_MASTER_KEY in Render dashboard secrets
+      - key: SECRET_KEY_BASE
+        value: "<SET_IN_RENDER_DASHBOARD>"
+      - key: RAILS_MASTER_KEY
+        value: "<SET_IN_RENDER_DASHBOARD>"
+
+databases:
+  - name: hrmitra-db
+    plan: starter
+    region: oregon   # change to your preferred region (e.g., frankfurt, singapore)
+    # Render will create DATABASE_URL env var and inject it to services in same repo
+  
